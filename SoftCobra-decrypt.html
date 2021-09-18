@@ -1,0 +1,60 @@
+<html>
+<head>
+<title>SoftCobra Decrypt</title>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js" integrity="sha512-nOQuvD9nKirvxDdvQ9OMqe2dgapbPB7vYAMrzJihw5m+aNcf0dX53m6YxM4LgA9u8e9eg9QX+/+mPu8kCNpV2A==" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+function decrypt(){
+
+	//var decryptText = document.getElementById('encodedText').value;
+    //var decodedString = (CryptoJS.AES.decrypt(decryptText,"/")).toString(CryptoJS.enc.Utf8);
+		
+	var decryptTextValue = jQuery('#encodedText').val();
+	callToServer('//nin10news.com/wp-content/themes/twentysixteen/inc/decode.php',decryptTextValue,decodeResult);
+	
+	//document.getElementById('decodedResult').value = decodedString;
+}
+
+    
+    function decodeResult(response){
+        
+        var decryptText = response;
+        
+        var decodedString = atob(decryptText);
+    		
+    	jQuery('#decodedResult').val(decodedString);
+        
+    }
+    
+    
+    function callToServer (url, data, callback) {
+            jQuery.ajax({
+                type: "POST",
+                url: url,
+                data: { data: data },
+                success: function (response) {
+                    console.log(response);
+                    if(callback){
+                        callback(response);
+                    }
+
+                },
+                failure: function (response) {
+                    console.log(response)
+    
+                }
+            });
+        }
+</script>
+<h2>Decrypt for SoftCobra:</h2>
+<h3>Source:</h3>
+<textarea id="encodedText" class="form-control" rows="2"></textarea>
+<h3>Result:</h3>
+<textarea id="decodedResult" class="form-control" rows="2"></textarea>
+<br/><br/>
+<button id="decodeBtn" class="btn btn-primary btn-sm" onclick="decrypt();">Decode</button>
+</body>
+</html>
